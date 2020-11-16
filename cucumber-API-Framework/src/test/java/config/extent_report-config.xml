@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extentreports>
+  <configuration>
+    <theme>standard</theme>
+    <encoding>UTF-8</encoding>
+    <protocol>http</protocol>
+    <documentTitle>Cucumber Report</documentTitle>
+   <brand-logo>  <!--  <![CDATA[
+<img src='C:\Users\madis\Downloads\njclabs.png' />
+
+]]> --> </brand-logo> 
+
+ <reportName> NJC Reports  </reportName>
+    <dateFormat>MM/dd/yyyy</dateFormat>
+    <timeFormat>HH:mm:ss</timeFormat>
+  
+    <scripts>
+      <![CDATA[
+         $(document).ready(function() {
+        	$(".brand-logo").replaceWith( "<img src='/cucumber-API-Framework/src/test/resources/images/njclabs.png' />" );
+      
+         });  
+       
+      ]]> 
+    </scripts>
+    
+    <!-- custom styles -->
+    <styles>
+      <![CDATA[
+        img {  height: 50px;
+    width: 50px; }
+	.report-name {
+    margin-left: 20px;
+    margin-top: 0px;
+    margin-bottom: 50px;
+    padding-bottom: 0px;
+    font-size: xxx-large;
+      ]]>
+    </styles>
+  </configuration>
+</extentreports>
