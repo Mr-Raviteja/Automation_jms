@@ -1,10 +1,12 @@
 package runner;
+
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.log4j.Logger;
 
 import javax.jms.*;
-
-import java.io.*;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 
 public class JmsConsumer implements MessageListener {
@@ -16,21 +18,11 @@ public class JmsConsumer implements MessageListener {
 private StringBuilder contentBuilder = new StringBuilder();
 private String outputfileLocation;
 private FileWriter fw;
-
+    private FileReader fr;
+    private String path;
     public JmsConsumer() {
 
     }
-
-
-   /* public void jms(String url,String qName,String ouputLocation) throws JMSException {
-        init(url,qName);
-        if(null!=connection) {
-            // Clean up
-            session.close();
-            connection.close();
-        }
-        }*/
-
 
 
     public void init(String url,String qName,String ouputLocation) throws JMSException {
@@ -54,20 +46,6 @@ private FileWriter fw;
            consumer.setMessageListener(new JmsConsumer("Consumer"));
             Thread.sleep(1000);
 
-            /*while (true){
-                 Message message=consumer.receiveNoWait();
-                if(message instanceof TextMessage) {
-                    TextMessage textMessage = (TextMessage) message;
-                    try {
-                        System.out.println("Jms message is:\n" + textMessage.getText());
-                        appendStrToFile(textMessage.getText().concat(","));
-                    } catch (JMSException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }*/
-
         }
         catch (Exception e) {
             System.out.println("Caught: " + e);
@@ -86,7 +64,7 @@ private FileWriter fw;
     public void appendStrToFile(String str) throws IOException {
         try {
 
-            String path = System.getProperty("user.dir") + "\\src\\DqueueDatafile.csv";
+            path = System.getProperty("user.dir") + "\\src\\DqueueDatafile.csv";
             fw = new FileWriter(path, true);
             fw.write(str);
             fw.write("\r\n");
@@ -96,9 +74,6 @@ private FileWriter fw;
             System.out.println("exception occoured" + e);
         }
         finally {
-            //fw.write(str.replaceFirst("[\n\r]+$", ""));
-           // str.replaceFirst("[\n\r]+$", "");
-            //fw.write(str);
             fw.close();
         }
     }
