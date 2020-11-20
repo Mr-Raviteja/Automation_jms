@@ -1,6 +1,5 @@
 package stepDefinition;
 
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -17,10 +16,10 @@ public class FtpStepDefination {
         ftpDriver.readFile(jsonlocation);
     }
 
-   @When("^I get Activemq endpoint (.*) and queue name (.*) and outputFile location (.*) path$")
-   public void getEndpointQueueName(String endpoint,String queueName,String outputfleLocation) throws JMSException {
-       ftpDriver.setEndpointandQueueName(endpoint,queueName,outputfleLocation);
-   }
+    @When("^I get Activemq endpoint (.*) and queue name (.*) and outputFile location (.*) path$")
+    public void getEndpointQueueName(String endpoint, String queueName, String outputfleLocation) throws JMSException {
+        ftpDriver.setEndpointandQueueName(endpoint, queueName, outputfleLocation);
+    }
 
     @When("^Dequeue json objects into a file in location (.*) path$")
     public void getDequeuedFile(String dqueuelocation) throws Throwable {
