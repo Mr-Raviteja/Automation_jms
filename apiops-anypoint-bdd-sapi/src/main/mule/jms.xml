@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ftp="http://www.mulesoft.org/schema/mule/ftp" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:jms="http://www.mulesoft.org/schema/mule/jms"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ftp http://www.mulesoft.org/schema/mule/ftp/current/mule-ftp.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="be6e98f2-30e1-402e-bac8-a45db61f25f4" >
+		<http:listener-connection host="0.0.0.0" port="8082" />
+	</http:listener-config>
+	<jms:config name="JMS_Config" doc:name="JMS Config" doc:id="2eaaa54f-4dd8-4bbf-af16-13406f29a196" >
+		<jms:active-mq-connection username="admin" password="admin" >
+			<jms:factory-configuration brokerUrl="tcp://64.227.37.97:61616" />
+		</jms:active-mq-connection>
+	</jms:config>
+	<ftp:config name="FTP_Config" doc:name="FTP Config" doc:id="beec5a3c-3232-4c16-8632-6668fa654c7d" >
+		<ftp:connection workingDir="empdir" host="localhost" username="ftpuser" password="ftpuser" />
+	</ftp:config>
+	<ftp:config name="FTP_Config1" doc:name="FTP Config" doc:id="87b58814-08b3-45ea-af58-70f5681b23ab" >
+		<ftp:connection workingDir="dqueue" host="localhost" username="ftpuser" password="ftpuser" />
+	</ftp:config>
+	<flow name="jmsFlow2" doc:id="f8dc57a4-43b1-480f-8fd2-5212b2b69d53" >
+		<ftp:listener doc:name="On New or Updated File" doc:id="29c6911f-e405-4fac-b19a-01f7f6f8c121" config-ref="FTP_Config" recursive="false" watermarkEnabled="true">
+			<scheduling-strategy >
+				<fixed-frequency frequency="2000"/>
+			</scheduling-strategy>
+		</ftp:listener>
+		<logger level="INFO" doc:name="Logger" doc:id="9318aa34-ca85-4114-bb3a-627e73f0afbe" message="#[payload]"/>
+		<ee:transform doc:name="Transform Message" doc:id="aeed7bc9-91c5-4946-ad97-46a585a62188">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/csv
+---
+payload[0]]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="csvData" ><![CDATA[%dw 2.0
+output application/csv 
+---
+payload]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="03d5db34-f7da-4d6c-bcd2-3ba7d2e3ee5e" message="#[payload]"/>
+		<jms:publish doc:name="Copy_of_Publish" doc:id="4201037d-ed01-4474-9e5d-1dac687c5447" config-ref="JMS_Config" destination="testAutomation" sendCorrelationId="ALWAYS" />
+		<logger level="INFO" doc:name="Logger" doc:id="b4c21656-629c-43f0-834b-3a05758fc613" />
+		<foreach doc:name="For Each" doc:id="61cd6eae-9c7c-44b8-8bf3-b0b6f143e78d" collection="#[vars.csvData]">
+			<jms:publish doc:id="589b79e1-78a5-415d-a4e5-453dd05b029a" config-ref="JMS_Config" destination="testAutomation" sendCorrelationId="ALWAYS" />
+			<logger level="INFO" doc:name="Logger" doc:id="47dc9641-2966-460a-b6fb-3b95f06be587" message="#[payload]" />
+		</foreach>
+	</flow>
+	<flow name="jmsFlow1" doc:id="74725eb9-edf1-4bf8-9306-a194f8580b16" initialState="stopped">
+		<scheduler doc:name="Scheduler" doc:id="859aa776-03f9-4c85-9732-842615f7c022" >
+			<scheduling-strategy >
+				<fixed-frequency frequency="100" timeUnit="SECONDS"/>
+			</scheduling-strategy>
+		</scheduler>
+		<jms:consume doc:name="Consume" doc:id="97a85323-0437-4402-a0c6-17264ed13ad5" config-ref="JMS_Config" destination="testAutomation"/>
+		<logger level="INFO" doc:name="Logger" doc:id="7b0e97cd-003c-4fa8-8420-b0c04bd63c8c" message="#[payload]"/>
+		<ftp:write doc:name="Write" doc:id="7a64240d-2d25-4c80-9023-bfe37f9f1939" config-ref="FTP_Config1" path="Datafiledequeue.json" mode="APPEND"/>
+		<logger level="INFO" doc:name="Logger" doc:id="b8e31df4-67ba-46e3-85a0-3dc9b6b2ded0" />
+	</flow>
+</mule>

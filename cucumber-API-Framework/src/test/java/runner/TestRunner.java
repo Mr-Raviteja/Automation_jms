@@ -17,8 +17,9 @@ import cucumber.api.junit.Cucumber;
 public class TestRunner {
 	 @AfterClass
 	 public static void writeExtentReport() {
-	
-	 Reporter.loadXMLConfig("/cucumber-API-Framework/src/test/resources/config/extent_report-config.xml");
+	 	String path = System.getProperty("user.dir");
+	 Reporter.loadXMLConfig("G:\\NJC_work\\projects\\Automation_personal\\apiops-anypoint-bdd-sapi\\cucumber-API-Framework\\src\\test\\java\\config\\extent_report-config.xml");
+			 //+path+"/src/test/resources/config/extent_report-config.xml");
 		 
 	 
 	 
