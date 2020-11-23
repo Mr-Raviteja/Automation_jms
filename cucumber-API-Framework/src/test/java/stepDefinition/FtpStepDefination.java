@@ -6,25 +6,26 @@ import cucumber.api.java.en.When;
 import runner.FtpDriver;
 
 import javax.jms.JMSException;
+import java.io.IOException;
 
 public class FtpStepDefination {
     private FtpDriver ftpDriver = new FtpDriver();
 
-    @Given("^I get the file from the location (.*) path$")
-    public void getInputFilelocation(String jsonlocation) throws Exception {
+    @Given("^I get the expected outputFile from the location (.*) path$")
+    public void getInputFilelocation(String expectedFileLocation) throws Exception {
 
-        ftpDriver.readFile(jsonlocation);
+        ftpDriver.readFile(expectedFileLocation);
     }
 
-    @When("^I get Activemq endpoint (.*) and queue name (.*) and outputFile location (.*) path$")
-    public void getEndpointQueueName(String endpoint, String queueName, String outputfleLocation) throws JMSException {
-        ftpDriver.setEndpointandQueueName(endpoint, queueName, outputfleLocation);
+    @When("^I get Activemq endpoint (.*) and queue name (.*) and actual outputFile location (.*) path$")
+    public void getEndpointQueueName(String endpoint, String queueName, String outputfileLocation) throws JMSException, IOException {
+        ftpDriver.setEndpointandQueueName(endpoint, queueName, outputfileLocation);
     }
 
-    @When("^Dequeue json objects into a file in location (.*) path$")
+   /* @When("^Dequeue json objects into a file in location (.*) path$")
     public void getDequeuedFile(String dqueuelocation) throws Throwable {
         ftpDriver.readDequeueFile(dqueuelocation);
-    }
+    }*/
 
     @Then("^I need to compare the two files where to match the content of the data by making assertion as (.*) value$")
     public void responseCodeValidation(boolean assertValue) throws Throwable {

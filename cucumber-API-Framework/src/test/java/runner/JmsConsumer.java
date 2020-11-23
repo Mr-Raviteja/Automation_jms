@@ -63,10 +63,11 @@ public class JmsConsumer implements MessageListener {
     public void appendStrToFile(String str) throws IOException {
         try {
 
-            path = System.getProperty("user.dir") + "\\src\\DqueueDatafile.csv";
+            //path = outputfileLocation;
+            path = System.getProperty("user.dir") + "\\src\\DqueueDatafile.json";
             fw = new FileWriter(path, true);
             fw.write(str);
-            fw.write("\r\n");
+            //fw.write("\r\n");
 
         } catch (IOException e) {
             System.out.println("exception occoured" + e);
