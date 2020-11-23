@@ -22,10 +22,6 @@ public class FtpStepDefination {
         ftpDriver.setEndpointandQueueName(endpoint, queueName, outputfileLocation);
     }
 
-   /* @When("^Dequeue json objects into a file in location (.*) path$")
-    public void getDequeuedFile(String dqueuelocation) throws Throwable {
-        ftpDriver.readDequeueFile(dqueuelocation);
-    }*/
 
     @Then("^I need to compare the two files where to match the content of the data by making assertion as (.*) value$")
     public void responseCodeValidation(boolean assertValue) throws Throwable {
