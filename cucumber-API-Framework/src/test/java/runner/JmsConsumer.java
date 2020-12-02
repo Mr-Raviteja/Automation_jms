@@ -16,18 +16,18 @@ public class JmsConsumer implements MessageListener {
     private Connection connection = null;
     private Session session = null;
     private StringBuilder contentBuilder = new StringBuilder();
-    private String outputfileLocation;
+    private static String outputfileLocation;
     private FileWriter fw;
     private FileReader fr;
     private String path;
+
 
     public JmsConsumer() {
 
     }
 
-
     public void init(String url, String qName, String ouputLocation) throws JMSException {
-        outputfileLocation = ouputLocation;
+        JmsConsumer.outputfileLocation = ouputLocation;
         try {
             // Create a ConnectionFactory
             ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url);
@@ -63,8 +63,8 @@ public class JmsConsumer implements MessageListener {
     public void appendStrToFile(String str) throws IOException {
         try {
 
-            //path = outputfileLocation;
-            path = System.getProperty("user.dir") + "\\src\\DqueueDatafile.json";
+            path = JmsConsumer.outputfileLocation;
+            //path = System.getProperty("user.dir") + "\\src\\DqueueDatafile.json";
             fw = new FileWriter(path, true);
             fw.write(str);
             //fw.write("\r\n");
