@@ -64,7 +64,6 @@ public class JmsConsumer implements MessageListener {
         try {
 
             path = JmsConsumer.outputfileLocation;
-            //path = System.getProperty("user.dir") + "\\src\\DqueueDatafile.json";
             fw = new FileWriter(path, true);
             fw.write(str);
             //fw.write("\r\n");
