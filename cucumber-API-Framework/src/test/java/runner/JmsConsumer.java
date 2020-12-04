@@ -28,12 +28,12 @@ public class JmsConsumer implements MessageListener {
 
     }
 
-    public String init(String url, String qName, String ouputLocation) throws JMSException {
+    public String init(String url, String qName, String ouputLocation, String fileExt) throws JMSException {
 
 
         String fileSuffix = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 
-        JmsConsumer.outputfileLocation = ouputLocation.concat("_").concat(fileSuffix);
+        JmsConsumer.outputfileLocation = ouputLocation.concat("_").concat(fileSuffix).concat(fileExt);
         try {
             // File file=new File(ouputLocation);
             //file.delete();

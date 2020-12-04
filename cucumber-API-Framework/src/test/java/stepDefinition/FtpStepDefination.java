@@ -17,9 +17,9 @@ public class FtpStepDefination {
         ftpDriver.readFile(expectedFileLocation);
     }
 
-    @When("^I get Activemq endpoint (.*) and queue name (.*) and actual outputFile location (.*) path$")
-    public void getEndpointQueueName(String endpoint, String queueName, String outputfileLocation) throws JMSException, IOException {
-        ftpDriver.setEndpointandQueueName(endpoint, queueName, outputfileLocation);
+    @When("^I get Activemq endpoint (.*) and queue name (.*) and actual outputFile location (.*) path with extention (.*)$")
+    public void getEndpointQueueName(String endpoint, String queueName, String outputfileLocation, String fileExt) throws JMSException, IOException {
+        ftpDriver.setEndpointandQueueName(endpoint, queueName, outputfileLocation, fileExt);
     }
 
 
