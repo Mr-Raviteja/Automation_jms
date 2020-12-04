@@ -22,8 +22,8 @@ public class FtpDriver {
 
     public void setEndpointandQueueName(String endpoint, String queueName, String actualOutFileLocation) throws JMSException, IOException {
         System.out.println(endpoint + ":" + queueName + ":" + actualOutFileLocation);
-        jmsConsumer.init(endpoint, queueName, actualOutFileLocation);
-        dequeueOutputfw = new File(actualOutFileLocation);
+        String outfile = jmsConsumer.init(endpoint, queueName, actualOutFileLocation);
+        dequeueOutputfw = new File(outfile);
 
     }
 

@@ -51,15 +51,4 @@ payload]]></ee:set-variable>
 			<logger level="INFO" doc:name="Logger" doc:id="47dc9641-2966-460a-b6fb-3b95f06be587" message="#[payload]" />
 		</foreach>
 	</flow>
-	<flow name="jmsFlow1" doc:id="74725eb9-edf1-4bf8-9306-a194f8580b16" initialState="stopped">
-		<scheduler doc:name="Scheduler" doc:id="859aa776-03f9-4c85-9732-842615f7c022" >
-			<scheduling-strategy >
-				<fixed-frequency frequency="100" timeUnit="SECONDS"/>
-			</scheduling-strategy>
-		</scheduler>
-		<jms:consume doc:name="Consume" doc:id="97a85323-0437-4402-a0c6-17264ed13ad5" config-ref="JMS_Config" destination="testAutomation"/>
-		<logger level="INFO" doc:name="Logger" doc:id="7b0e97cd-003c-4fa8-8420-b0c04bd63c8c" message="#[payload]"/>
-		<ftp:write doc:name="Write" doc:id="7a64240d-2d25-4c80-9023-bfe37f9f1939" config-ref="FTP_Config1" path="Datafiledequeue.json" mode="APPEND"/>
-		<logger level="INFO" doc:name="Logger" doc:id="b8e31df4-67ba-46e3-85a0-3dc9b6b2ded0" />
-	</flow>
 </mule>

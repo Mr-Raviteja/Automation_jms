@@ -7,6 +7,8 @@ import javax.jms.*;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class JmsConsumer implements MessageListener {
@@ -26,9 +28,16 @@ public class JmsConsumer implements MessageListener {
 
     }
 
-    public void init(String url, String qName, String ouputLocation) throws JMSException {
-        JmsConsumer.outputfileLocation = ouputLocation;
+    public String init(String url, String qName, String ouputLocation) throws JMSException {
+
+
+        String fileSuffix = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+
+        JmsConsumer.outputfileLocation = ouputLocation.concat("_").concat(fileSuffix);
         try {
+            // File file=new File(ouputLocation);
+            //file.delete();
+
             // Create a ConnectionFactory
             ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url);
 
@@ -57,17 +66,18 @@ public class JmsConsumer implements MessageListener {
                 connection.close();
             }
         }
-
+        return outputfileLocation;
     }
 
     public void appendStrToFile(String str) throws IOException {
         try {
+            if (null != str) {
 
-            path = JmsConsumer.outputfileLocation;
-            fw = new FileWriter(path, true);
-            fw.write(str);
-            //fw.write("\r\n");
-
+                path = JmsConsumer.outputfileLocation;
+                fw = new FileWriter(path, true);
+                fw.write(str);
+                //fw.write("\r\n");
+            }
         } catch (IOException e) {
             System.out.println("exception occoured" + e);
         } finally {
