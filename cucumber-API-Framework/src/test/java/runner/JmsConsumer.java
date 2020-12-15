@@ -33,7 +33,7 @@ public class JmsConsumer implements MessageListener {
 
         String fileSuffix = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 
-        JmsConsumer.outputfileLocation = ouputLocation.concat("_").concat(fileSuffix).concat(fileExt);
+        JmsConsumer.outputfileLocation = ouputLocation.concat("_").concat(fileSuffix).concat(".").concat(fileExt);
         try {
             // File file=new File(ouputLocation);
             //file.delete();

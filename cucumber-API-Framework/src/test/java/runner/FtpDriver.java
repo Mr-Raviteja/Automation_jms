@@ -54,7 +54,11 @@ public class FtpDriver {
                 while (equal && expLine != null) {
                     expLine = bExp.readLine();
                     resLine = bRes.readLine();
+                    if (null == expLine || null == resLine) {
+                        break;
+                    }
                     equal = expLine.equals(resLine);
+
                 }
             }
         } catch (Exception e) {
