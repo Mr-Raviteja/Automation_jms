@@ -1,24 +1,20 @@
 package runner;
 
-import static com.jayway.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-
-import java.io.IOException;
-import java.util.Map;
-
-import org.hamcrest.Matcher;
-import org.json.simple.JSONObject;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.matcher.ResponseAwareMatcher;
 import com.jayway.restassured.response.ResponseBody;
 import com.jayway.restassured.response.ValidatableResponse;
 import com.jayway.restassured.specification.RequestSpecification;
-
+import org.hamcrest.Matcher;
+import org.json.simple.JSONObject;
 import utils.HelperUtil;
+
+import java.io.IOException;
+import java.util.Map;
+
+import static com.jayway.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
 
 public class Driver{
 	
@@ -29,12 +25,17 @@ public class Driver{
 	private static final String GET = "GET";
 	private static final String POST = "POST";
 	private static final String RANDOM = "random";
+	private Map<String, String> headerMap;
 
 	public void sendRequest(String reqestMethod) {
 		 if(GET.equalsIgnoreCase(reqestMethod)) {
-			 response = given().when().get(uri).then();
+			 response = given().when().headers(this.headerMap).get(uri).then();
 		 } else if(POST.equalsIgnoreCase(reqestMethod)) {
 			 RequestSpecification request = RestAssured.given();
+
+			 for (Map.Entry<String, String> headersStringMap1 : this.headerMap.entrySet()) {
+				 request.header(headersStringMap1.getKey(), headersStringMap1.getValue());
+			 }
 				request.header("Content-Type", this.contentType);
 				request.body(this.body);
 		 		
@@ -98,7 +99,9 @@ public class Driver{
 		return jsonObject.toJSONString();
 	}
 
-	
 
-	
+	public void setHeaders(Map<String, String> headersStringMap) {
+		//if(!headersStringMap.isEmpty())
+		this.headerMap = headersStringMap;
+	}
 }

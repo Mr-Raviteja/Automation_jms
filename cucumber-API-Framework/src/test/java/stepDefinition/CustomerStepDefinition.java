@@ -1,10 +1,14 @@
 package stepDefinition;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import cucumber.api.DataTable;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import runner.Driver;
+
+import java.util.Map;
 
 public class CustomerStepDefinition {
 	private Driver driver = new Driver();
@@ -43,5 +47,12 @@ public class CustomerStepDefinition {
     @And("^I send the values of (.*) in the request body$")
     public void setRequestBody(String filePath) throws Throwable {
         driver.setRequestBody(filePath);
+    }
+
+    @And("^with the following headers$")
+    public void setHeaders(DataTable headers) {
+        ObjectMapper objectmapper = new ObjectMapper();
+        Map<String, String> headersStringMap = headers.asMap(String.class, String.class);
+        driver.setHeaders(headersStringMap);
     }
 }
