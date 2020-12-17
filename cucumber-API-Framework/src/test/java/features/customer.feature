@@ -30,3 +30,11 @@ And with the following headers
 And I send the GET request to the service
 Then I get the 200 response code
 
+Scenario: Create ServiceNow incident
+Given I create a new request with http://apios-servicenow-sapi.us-e2.cloudhub.io/api/ service
+And I add the incidents endpoint to the service
+And I send the values of src/test/resources/cucumberResources/serviceNowIncidentInput.json in the request body
+And with the following headers
+| Content-Type | application/json |
+And I send the POST request to the service
+Then I get the 201 response code

@@ -26,23 +26,23 @@ public class Driver {
     private ValidatableResponse response;
     private String contentType;
     private String body;
-    private Map<String, String> headerMap = Collections.EMPTY_MAP;
+    private Map<String, String> headersMap = Collections.EMPTY_MAP;
 
     public void sendRequest(String reqestMethod) {
         if (GET.equalsIgnoreCase(reqestMethod)) {
-            if (this.headerMap.isEmpty())
+            if (this.headersMap.isEmpty())
                 response = given().when().get(uri).then();
             else
-                response = given().when().headers(this.headerMap).get(uri).then();
+                response = given().when().headers(this.headersMap).get(uri).then();
 
         } else if (POST.equalsIgnoreCase(reqestMethod)) {
             RequestSpecification request = RestAssured.given();
             //request.header("Content-Type", this.contentType);
             request.body(this.body);
-            if (this.headerMap.isEmpty())
+            if (this.headersMap.isEmpty())
                 response = request.post(uri).then();
             else
-                response = request.headers(this.headerMap).post(uri).then();
+                response = request.headers(this.headersMap).post(uri).then();
 
         }
     }
@@ -105,6 +105,6 @@ public class Driver {
 
 
     public void setHeaders(Map<String, String> headersStringMap) {
-        this.headerMap = headersStringMap;
+        this.headersMap = headersStringMap;
     }
 }
